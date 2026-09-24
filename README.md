@@ -9,7 +9,7 @@
 
 An end-to-end deep learning image classification pipeline for the **CAGS (Cats and Dogs)** 34-breed fine-grained classification competition, developed as part of the **NPFL138 (Deep Learning)** course at **Charles University (Faculty of Mathematics and Physics / MFF UK)** (Apr 2026).
 
-🏆 **Achieved 97.22% test accuracy**, placing **Top 3** out of 100+ competing teams and individual submissions.
+🏆 **Achieved 97.22% test accuracy**, placing **Top 3** out of 139 competing teams and individual submissions.
 
 ---
 
@@ -19,7 +19,7 @@ An end-to-end deep learning image classification pipeline for the **CAGS (Cats a
 - **Instructor**: Milan Straka
 - **Task**: CAGS Classification ([Task Specification](https://raw.githubusercontent.com/ufal/npfl138/master/tasks/cags_classification.md))
 - **Team**: Yannick Daniel Gibson, Robin Klubarski, Vojtěch Nekl
-- **Final Result**: **97.22% Test Accuracy** (Rank 3 / Top 3, 5/5 Bonus Points)
+- **Final Result**: **97.22% Test Accuracy** (Rank 3 / Top 3 out of 139 teams, 5/5 Bonus Points)
 
 ---
 
