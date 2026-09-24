@@ -2,13 +2,24 @@
 
 [![Python](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](https://www.python.org/)
 [![PyTorch](https://img.shields.io/badge/PyTorch-2.0%2B-ee4c2c.svg)](https://pytorch.org/)
+[![Course: NPFL138 Deep Learning](https://img.shields.io/badge/Course-NPFL138%20Deep%20Learning-purple.svg)](https://ufal.mff.cuni.cz/courses/npfl138)
 [![Competition](https://img.shields.io/badge/Competition-Top%203%20%2F%20Rank%203-gold.svg)]()
 [![Accuracy](https://img.shields.io/badge/Test%20Accuracy-97.22%25-brightgreen.svg)]()
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-An end-to-end deep learning image classification pipeline for the **CAGS (Cats and Dogs)** 34-breed fine-grained classification competition in the Charles University Deep Learning course (NPFL138, Apr 2026).
+An end-to-end deep learning image classification pipeline for the **CAGS (Cats and Dogs)** 34-breed fine-grained classification competition, developed as part of the **NPFL138 (Deep Learning)** course at **Charles University (Faculty of Mathematics and Physics / MFF UK)** (Apr 2026).
 
-🏆 **Achieved 97.22% test accuracy**, placing **Top 3** out of 100+ competing teams and individuals.
+🏆 **Achieved 97.22% test accuracy**, placing **Top 3** out of 100+ competing teams and individual submissions.
+
+---
+
+## 🎓 Course & Competition Context
+
+- **Course**: [NPFL138 Deep Learning](https://ufal.mff.cuni.cz/courses/npfl138) — Charles University (MFF UK), Institute of Formal and Applied Linguistics (ÚFAL)
+- **Instructor**: Milan Straka
+- **Task**: CAGS Classification ([Task Specification](https://raw.githubusercontent.com/ufal/npfl138/master/tasks/cags_classification.md))
+- **Team**: Yannick Daniel Gibson, Robin Klubarski, Vojtěch Nekl
+- **Final Result**: **97.22% Test Accuracy** (Rank 3 / Top 3, 5/5 Bonus Points)
 
 ---
 
