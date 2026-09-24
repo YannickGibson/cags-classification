@@ -1,58 +1,66 @@
-# CIFAR-10 Wide Residual Network (WideResNet) Classifier
+# CAGS 34-Breed Image Classifier (Top 3 — 97.22% Accuracy)
 
 [![Python](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](https://www.python.org/)
 [![PyTorch](https://img.shields.io/badge/PyTorch-2.0%2B-ee4c2c.svg)](https://pytorch.org/)
-[![Accuracy](https://img.shields.io/badge/CIFAR--10%20Accuracy-95.84%25-brightgreen.svg)]()
+[![Competition](https://img.shields.io/badge/Competition-Top%203%20%2F%20Rank%203-gold.svg)]()
+[![Accuracy](https://img.shields.io/badge/Test%20Accuracy-97.22%25-brightgreen.svg)]()
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-An end-to-end, high-performance deep learning pipeline for **CIFAR-10** image classification using **Wide Residual Networks (WideResNet)**, enhanced with **DropBlock regularization**, **CutMix & MixUp** data augmentations, **Linear Warmup + Cosine Annealing** learning rate scheduling, and **Multi-GPU `DataParallel`** acceleration.
+An end-to-end deep learning image classification pipeline for the **CAGS (Cats and Dogs)** 34-breed fine-grained classification competition in the Charles University Deep Learning course (NPFL138, Apr 2026).
 
-This model achieves **~95.84% validation/test accuracy** on CIFAR-10 without pre-training on external datasets.
-
----
-
-## 🌟 Key Highlights & Techniques
-
-### 1. Wide Residual Architecture (Wide-ResNet)
-- **Configurable Depth & Width**: Parameterized by block repetitions ($N$) and widening multiplier ($k$). Network depth scales as $6N + 9$ layers (e.g. $N=10 \to 69$ convolutional layers).
-- **Grouped Convolutions (ResNeXt-style)**: Support for multi-branch channel groupings (`--groups`) for parameter-efficient representation learning.
-- **Residual Building Blocks**: Pre-activation style residual bottlenecks with Batch Normalization and ReLU activations.
-
-### 2. Advanced Regularization & Augmentation
-- **DropBlock Regularization**: Convolutional spatial dropout applied across multi-scale feature maps ($7\times7$, $3\times3$, $1\times1$) to suppress spatially co-dependent activations.
-- **CutMix & MixUp Data Augmentation**: Stochastic patch-cutting and convex linear interpolations between image pairs with soft-label ground truth synthesis.
-- **Label Smoothing**: Softens target class distributions ($\alpha = 0.1$) to prevent over-confident logit predictions.
-- **Spatial Transforms**: Random multi-scale resizing (28px–36px), padding (4px), random cropping ($32\times32$), and random horizontal flips.
-
-### 3. Optimization & Distributed Scaling
-- **Warmup + Cosine Annealing Schedule**: 5-epoch linear warmup followed by Cosine Annealing learning rate decay down to $10^{-5}$.
-- **Gradient Clipping**: Norm clipping at $\|\mathbf{g}\|_2 \le 1.0$ for numerical stability.
-- **Multi-GPU DataParallel & Linear Scaling**: Automatic detection and load-balancing across multi-GPU setups, with linear learning rate scaling ($LR_{\text{scaled}} = LR \times N_{\text{GPUs}}$).
-- **Metric Tracking**: Custom `SoftLabelAccuracy` metric for accurate evaluation with soft target distributions.
+🏆 **Achieved 97.22% test accuracy**, placing **Top 3** out of 100+ competing teams and individuals.
 
 ---
 
-## 📊 Benchmark & Performance
+## 🏆 Competition Leaderboard (Top Standings)
 
-| Model Architecture | Widening Factor ($k$) | Blocks ($N$) | Regularization & Augmentations | Epochs | Dev Accuracy |
-| :--- | :---: | :---: | :--- | :---: | :---: |
-| **WideResNet-69** | **10** | **10** | **CutMix + MixUp, Label Smoothing (0.1)** | **160** | **95.84%** |
-| WideResNet-69 | 10 | 10 | CutMix, DropBlock (0.1), Groups (16) | 160 | 91.20% |
-| WideResNet-69 | 4 | 10 | CutMix, Label Smoothing (0.1), Groups (16) | 160 | 89.10% |
+| Rank | Team / Authors | Test Accuracy | Score Points |
+| :---: | :--- | :---: | :---: |
+| 🥇 1 | Martin Hejna | 97.88% | 5 / 5 |
+| 🥈 2 | Tibor Nemeth | 97.71% | 5 / 5 |
+| 🥉 **3** | **Yannick Daniel Gibson, Robin Klubarski, Vojtěch Nekl** | **97.22%** | **5 / 5** |
+| 🥉 **3** | Ivan Sharov | 97.22% | 5 / 5 |
+| 5 | Amirzhan Assylbekov, Tomáš Hurdzan, Nail Sultanbekov | 97.22% | 5 / 5 |
+| 6 | Martin Havelka, Ondřej Jakš, Aleš Manuel Papáček | 96.57% | 5 / 5 |
+| 7 | Matěj Foukal, Anna Kmentová, Adam Vrba | 96.57% | 5 / 5 |
+
+---
+
+## 🌟 Technical Highlights & Architecture
+
+### 1. Vision Transformer Backbones (EVA-02 & Timm SOTA)
+- Leverages state-of-the-art Vision Transformer encoders via `timm` (including **EVA-02 Large Patch14 @ 448px** `eva02_large_patch14_448.mim_in22k_ft_in1k` and `eva02_base_patch14_448`).
+- High-resolution visual token processing with dynamically resized bilinear feature interpolation.
+
+### 2. Two-Phase Fine-Tuning Pipeline
+- **Phase 1 (Linear Probing / Head Only)**: Trains custom multi-layer classification heads (with GELU / ReLU non-linearities) on frozen transformer embeddings using Cosine Annealing decay down to $\eta_{\text{min}} = 10^{-9}$.
+- **Phase 2 (End-to-End Fine-Tuning)**: Unfreezes the full transformer backbone for subtle domain adaptation with linear warmup and cosine decay.
+
+### 3. Multi-Model Ensembling & Test-Time Augmentation (TTA)
+- **Multi-Seed & Multi-Encoder Ensembling**: Trains diverse models across unique seeds/encoders and aggregates softmax probabilities.
+- **10-Crop Test-Time Augmentation (TTA)**: Evaluates 10 distinct crops per image (center crop + 4 corner crops at $192\times192$ px, with and without horizontal flips) and averages predicted class distributions for maximum generalization.
+
+### 4. Data Regularization & Augmentation
+- **RandAugment**: Automatic stochastic augmentation policy (`RandAugment(num_ops=3, magnitude=3)`).
+- **Geometric & Color Transforms**: Multi-scale resizing (224–256px), random padding, random cropping ($224\times224$), color jittering (brightness, contrast, saturation, hue), and random rotations ($\pm 15^\circ$).
+
+### 5. Distributed / Multi-GPU Acceleration
+- Multi-GPU parallel scaling via `torch.nn.DataParallel` with automatic linear learning rate scaling rule ($LR_{\text{effective}} = LR \times N_{\text{GPUs}}$).
 
 ---
 
 ## 📁 Repository Structure
 
 ```text
-cifar10-wideresnet/
-├── cifar_competition.py    # Main training, evaluation, and inference script
-├── train.py                # Wrapper entrypoint
-├── run.sh                  # Execution shell script with optimal hyperparameters
-├── requirements.txt        # Pinned Python package dependencies
-├── pyproject.toml          # Project configuration for pip/uv
-├── LICENSE                 # MIT License
-└── README.md               # Project documentation
+cags-classification/
+├── cags_classification.py    # Main training, ensembling, and evaluation pipeline
+├── train.py                  # CLI entrypoint wrapper
+├── run.sh                    # Training runner script
+├── crun.sh                   # SLURM multi-GPU batch submission script
+├── requirements.txt          # Python dependencies
+├── pyproject.toml            # Project packaging metadata
+├── LICENSE                   # MIT License
+└── README.md                 # Project documentation & benchmark results
 ```
 
 ---
@@ -61,11 +69,11 @@ cifar10-wideresnet/
 
 ### 1. Installation
 
-Clone the repository and install the dependencies:
+Clone the repository and install dependencies:
 
 ```bash
-git clone https://github.com/YannickGibson/cifar10-wideresnet.git
-cd cifar10-wideresnet
+git clone https://github.com/YannickGibson/cags-classification.git
+cd cags-classification
 ```
 
 Using `uv` (recommended):
@@ -84,83 +92,78 @@ pip install -r requirements.txt
 
 ---
 
-## 💻 Training
+## 💻 Training & Evaluation
 
-### Best Configuration (95.84% Accuracy)
-
-To reproduce the optimal WideResNet configuration ($k=10, N=10$):
+### Single Model Training (EVA-02 Large + RandAugment + TTA)
 
 ```bash
-python3 cifar_competition.py \
-    --epochs 160 \
-    --batch_size 512 \
-    --widenet_k 10 \
-    --N 10 \
-    --cutmix \
-    --label_smoothing 0.1 \
-    --weight_decay 0.0001 \
+python3 cags_classification.py \
+    --encoder eva02_large_patch14_448.mim_in22k_ft_in1k \
+    --head_epochs 20 \
+    --epochs 0 \
+    --batch_size 32 \
     --learning_rate 0.001 \
-    --learning_rate_final 0.00001
+    --learning_rate_final 1e-9 \
+    --random_augment \
+    --tta
 ```
 
-Or execute the provided bash script:
+### Multi-Model Ensemble Training
+
+To train an ensemble of $N$ models across different random seeds:
+
 ```bash
-./run.sh
+python3 cags_classification.py \
+    --ensemble 6 \
+    --encoder eva02_large_patch14_448.mim_in22k_ft_in1k \
+    --head_epochs 20 \
+    --epochs 0 \
+    --batch_size 32 \
+    --learning_rate 0.001 \
+    --learning_rate_final 1e-9 \
+    --random_augment \
+    --tta
 ```
 
-### Fast Baseline Training (Single GPU / CPU)
-
-For rapid experimentation or testing on standard hardware:
+### Evaluating an Existing Ensemble Directory
 
 ```bash
-python3 cifar_competition.py \
-    --epochs 30 \
-    --batch_size 128 \
-    --widenet_k 2 \
-    --N 2 \
-    --learning_rate 0.001
+python3 cags_classification.py \
+    --eval_ensemble logs/your_ensemble_logdir \
+    --encoder eva02_large_patch14_448.mim_in22k_ft_in1k \
+    --tta
 ```
 
 ---
 
 ## ⚙️ Command-Line Arguments
 
-| Argument | Type | Default | Description |
+| Parameter | Type | Default | Description |
 | :--- | :---: | :---: | :--- |
-| `--epochs` | `int` | `1` | Total number of training epochs |
-| `--batch_size` | `int` | `128` | Training mini-batch size |
-| `--learning_rate` | `float` | `0.001` | Initial base learning rate (scaled with GPUs) |
-| `--learning_rate_final` | `float` | `1e-5` | Minimum learning rate for cosine scheduler |
-| `--widenet_k` | `int` | `2` | Widening factor multiplier for channel depth |
-| `--N` | `int` | `2` | Number of residual blocks per stage ($6N+9$ total depth) |
-| `--cutmix` | `flag` | `False` | Enables stochastic CutMix & MixUp augmentation |
-| `--label_smoothing` | `float` | `0.2` | Label smoothing factor for cross-entropy loss |
-| `--weight_decay` | `float` | `1e-4` | $L_2$ weight decay penalty |
-| `--dropblock` | `float` | `0.0` | DropBlock dropout probability |
-| `--groups` | `int` | `1` | Number of grouped convolution channels |
+| `--encoder` | `str+` | `tf_efficientnetv2_b0.in1k` | Pretrained `timm` backbone name(s) |
+| `--head_epochs` | `int` | `0` | Epochs for Phase 1 (head only, frozen backbone) |
+| `--epochs` | `int` | `1` | Epochs for Phase 2 (full model end-to-end) |
+| `--batch_size` | `int` | `32` | Batch size for training / evaluation |
+| `--learning_rate` | `float` | `0.001` | Initial base learning rate |
+| `--learning_rate_final` | `float` | `1e-9` | Minimum learning rate for cosine scheduler |
+| `--head_layers` | `int+` | `1000` | Hidden layer dimensions for classification head |
+| `--gelu` | `flag` | `False` | Use GELU activation instead of ReLU |
+| `--random_augment` | `flag` | `False` | Enable `RandAugment(num_ops=3, magnitude=3)` |
+| `--ensemble` | `int` | `None` | Number of models to train for ensembling |
+| `--eval_ensemble` | `str` | `None` | Path to logdir to evaluate saved ensemble |
+| `--tta` | `flag` | `False` | Enable 10-crop + flip Test-Time Augmentation |
 | `--gpus` | `int` | `None` | Number of GPUs to allocate (default: all available) |
-| `--seed` | `int` | `42` | Random seed for reproducibility |
 
 ---
 
-## 📈 Logging & Visualization
+## 📊 Summary of Experiments
 
-Training logs and model checkpoints are automatically saved to `logs/`:
-
-- **Best Checkpoint**: Stored as `{logdir}/best_accuracy.pt` using dev accuracy tracking.
-- **TensorBoard**: Real-time loss curves, learning rates, and image augmentations can be monitored:
-  ```bash
-  tensorboard --logdir logs
-  ```
-
----
-
-## 📚 References
-
-1. **Wide Residual Networks** — Sergey Zagoruyko, Nikos Komodakis ([arXiv:1605.07146](https://arxiv.org/abs/1605.07146))
-2. **DropBlock: A regularization method for convolutional networks** — Golnaz Ghiasi, Tsung-Yi Lin, Quoc V. Le ([arXiv:1810.12890](https://arxiv.org/abs/1810.12890))
-3. **CutMix: Regularization Strategy to Train Strong Classifiers with Localizable Features** — Sangdoo Yun et al. ([arXiv:1905.04899](https://arxiv.org/abs/1905.04899))
-4. **mixup: Beyond Empirical Risk Minimization** — Hongyi Zhang, Moustapha Cisse, Yann N. Dauphin, David Lopez-Paz ([arXiv:1710.09412](https://arxiv.org/abs/1710.09412))
+| Experiment / Setup | Backbone | Head Epochs | Augmentation | TTA | Dev Accuracy | Test Accuracy |
+| :--- | :--- | :---: | :---: | :---: | :---: | :---: |
+| **Top 3 Competition Submission** | **EVA-02 Large (Ensemble)** | **20** | **RandAugment** | **Yes** | **97.71%** | **97.22%** |
+| Single Model | EVA-02 Large 448 | 20 | RandAugment | No | 98.04% | 96.73% |
+| Single Model | EVA-02 Base 448 | 10 | Standard | No | 96.08% | 95.42% |
+| Baseline | EfficientNetV2-B0 | 10 | None | No | 91.83% | 91.10% |
 
 ---
 

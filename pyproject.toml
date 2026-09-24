@@ -1,7 +1,7 @@
 [project]
-name = "cifar10-wideresnet"
+name = "cags-classification"
 version = "0.1.0"
-description = "High-accuracy CIFAR-10 image classification using Wide Residual Networks (WideResNet), DropBlock, CutMix/MixUp, and multi-GPU training."
+description = "Top 3 (97.22% accuracy) deep learning image classifier on the CAGS (Cats and Dogs) 34-breed dataset using Vision Transformers, Two-Phase Fine-Tuning, Multi-Model Ensembling, and Test-Time Augmentation (TTA)."
 authors = [
     { name = "Yannick Gibson" }
 ]
@@ -10,10 +10,11 @@ requires-python = ">=3.10"
 dependencies = [
     "torch>=2.0.0",
     "torchvision>=0.15.0",
+    "timm>=0.9.0",
     "torchmetrics>=1.0.0",
     "numpy>=1.24.0",
     "tensorboard>=2.14.0",
-    "npfl138>=2526.4.0",
+    "npfl138>=2526.5.0",
 ]
 
 [build-system]
