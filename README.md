@@ -1,4 +1,4 @@
-# CAGS 34-Breed Image Classifier (Top 3 — 97.22% Accuracy)
+# CAGS 34-Breed Image Classifier (Top 3, 97.22% Accuracy)
 
 [![Python](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](https://www.python.org/)
 [![PyTorch](https://img.shields.io/badge/PyTorch-2.0%2B-ee4c2c.svg)](https://pytorch.org/)
@@ -15,7 +15,7 @@ An end-to-end deep learning image classification pipeline for the **CAGS (Cats a
 
 ## 🎓 Course & Competition Context
 
-- **Course**: [NPFL138 Deep Learning](https://ufal.mff.cuni.cz/courses/npfl138) — Charles University (MFF UK), Institute of Formal and Applied Linguistics (ÚFAL)
+- **Course**: [NPFL138 Deep Learning](https://ufal.mff.cuni.cz/courses/npfl138), Charles University (MFF UK), Institute of Formal and Applied Linguistics (ÚFAL)
 - **Instructor**: Milan Straka
 - **Task**: CAGS Classification ([Task Specification](https://raw.githubusercontent.com/ufal/npfl138/master/tasks/cags_classification.md))
 - **Team**: Yannick Daniel Gibson, Robin Klubarski, Vojtěch Nekl
@@ -39,7 +39,7 @@ An end-to-end deep learning image classification pipeline for the **CAGS (Cats a
 
 ### 4. Data Regularization & Augmentation
 - **RandAugment**: Automatic stochastic augmentation policy (`RandAugment(num_ops=3, magnitude=3)`).
-- **Geometric & Color Transforms**: Multi-scale resizing (224–256px), random padding, random cropping ($224\times224$), color jittering (brightness, contrast, saturation, hue), and random rotations ($\pm 15^\circ$).
+- **Geometric & Color Transforms**: Multi-scale resizing (224-256px), random padding, random cropping ($224\times224$), color jittering (brightness, contrast, saturation, hue), and random rotations ($\pm 15^\circ$).
 
 ### 5. Distributed / Multi-GPU Acceleration
 - Multi-GPU parallel scaling via `torch.nn.DataParallel` with automatic linear learning rate scaling rule ($LR_{\text{effective}} = LR \times N_{\text{GPUs}}$).
@@ -166,4 +166,4 @@ python3 cags_classification.py \
 
 ## 📄 License
 
-This project is licensed under the [MIT License](LICENSE) — see the LICENSE file for details.
+This project is licensed under the [MIT License](LICENSE). See the LICENSE file for details.
