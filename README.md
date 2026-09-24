@@ -5,7 +5,7 @@
 [![Course: NPFL138 Deep Learning](https://img.shields.io/badge/Course-NPFL138%20Deep%20Learning-purple.svg)](https://ufal.mff.cuni.cz/courses/npfl138)
 [![Competition](https://img.shields.io/badge/Competition-Top%203%20%2F%20Rank%203-gold.svg)]()
 [![Accuracy](https://img.shields.io/badge/Test%20Accuracy-97.22%25-brightgreen.svg)]()
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![License: CC BY-SA 4.0](https://img.shields.io/badge/License-CC%20BY--SA%204.0-lightgrey.svg)](LICENSE)
 
 An end-to-end deep learning image classification pipeline for the **CAGS (Cats and Dogs)** 34-breed fine-grained classification competition, developed as part of the **NPFL138 (Deep Learning)** course at **Charles University (Faculty of Mathematics and Physics / MFF UK)** (Apr 2026).
 
@@ -166,4 +166,4 @@ python3 cags_classification.py \
 
 ## 📄 License
 
-This project is licensed under the [MIT License](LICENSE). See the LICENSE file for details.
+This project is licensed under the [Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0) License](LICENSE), matching the upstream course repository licensing. See the LICENSE file for full terms.
