@@ -23,20 +23,6 @@ An end-to-end deep learning image classification pipeline for the **CAGS (Cats a
 
 ---
 
-## 🏆 Competition Leaderboard (Top Standings)
-
-| Rank | Team / Authors | Test Accuracy | Score Points |
-| :---: | :--- | :---: | :---: |
-| 🥇 1 | Martin Hejna | 97.88% | 5 / 5 |
-| 🥈 2 | Tibor Nemeth | 97.71% | 5 / 5 |
-| 🥉 **3** | **Yannick Daniel Gibson, Robin Klubarski, Vojtěch Nekl** | **97.22%** | **5 / 5** |
-| 🥉 **3** | Ivan Sharov | 97.22% | 5 / 5 |
-| 5 | Amirzhan Assylbekov, Tomáš Hurdzan, Nail Sultanbekov | 97.22% | 5 / 5 |
-| 6 | Martin Havelka, Ondřej Jakš, Aleš Manuel Papáček | 96.57% | 5 / 5 |
-| 7 | Matěj Foukal, Anna Kmentová, Adam Vrba | 96.57% | 5 / 5 |
-
----
-
 ## 🌟 Technical Highlights & Architecture
 
 ### 1. Vision Transformer Backbones (EVA-02 & Timm SOTA)
