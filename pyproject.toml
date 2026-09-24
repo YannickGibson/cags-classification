@@ -1,0 +1,21 @@
+[project]
+name = "cifar10-wideresnet"
+version = "0.1.0"
+description = "High-accuracy CIFAR-10 image classification using Wide Residual Networks (WideResNet), DropBlock, CutMix/MixUp, and multi-GPU training."
+authors = [
+    { name = "Yannick Gibson" }
+]
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "torch>=2.0.0",
+    "torchvision>=0.15.0",
+    "torchmetrics>=1.0.0",
+    "numpy>=1.24.0",
+    "tensorboard>=2.14.0",
+    "npfl138>=2526.4.0",
+]
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
